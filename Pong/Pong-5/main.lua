@@ -57,17 +57,13 @@ function love.load()
 	player1score = 0
 	player2Score = 0
 	
-	-- paddle possitions on the Y axis (they can only move up or down)
-	player1Y = 30
-	player2Y = VIRTUAL_HEIGHT - 50
+	-- initialize our player paddles; make them global so that they can be
+	-- detected by other functions and modules
+	player1 = Paddle(10, 30, 5, 20)
+	player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 50, 5, 20)
 	
-	-- velocity and position variables for out ball when play starts
-	ballX = VIRTUAL_WIDTH / 2 - 2
-	ballY = VIRTUAL_HEIGHT / 2 - 2
-	
-	-- math.random return a random value between the left and right number
-	ballDX = math.random(2) == 1 and 100 or -100
-	ballDY = math.random(-50, 50)
+	-- place a  ball i the middle of the screen
+	ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
 	
 	-- game state variable used to transiton between different parts of the game
 	-- (used for beginning, menus, main game, high score list, etc.) 
@@ -82,33 +78,30 @@ end
 function love.update(dt)
 	-- player 1 movement
 	if love.keyboard.isDown('w') then
-		-- add negative padddle speed o current Y scaled by deltaTime
-		-- now, we clamp position between the bounds of the screen
-		-- math.man returns the greater of two values; 0 and player Y
-		-- will ensure we don't go above it
-		player1Y = math.max(0, player1Y + -PADDLE_SPEED * dt)
+		player1.dy = -PADDLE_SPEED
 	elseif love.keyboard.isDown('s') then
-		-- add positive paddle speed to current Y scaled by deltaTime
-		-- manth.min returns the lesser of two values; botton of the edge minus
-		-- and player Y will ensure wee don't go below it
-		player1Y = math.min(VIRTUAL_HEIGHT - 20, player1Y + PADDLE_SPEED * dt)
+		player1.dy = PADDLE_SPEED
+	else
+		player1.dy = 0
 	end
 
 	-- player 2 movement
 	if love.keyboard.isDown('up') then
-		-- add negative paddle speed to current Y scaled by deltaTime
-		player2Y = math.max(0, player2Y + -PADDLE_SPEED * dt)
+		player2.dy = -PADDLE_SPEED
 	elseif love.keyboard.isDown('down') then
-		-- add positive paddle speed to current Y scaled by deltaTime
-		player2Y = math.min(VIRTUAL_HEIGHT - 20, player2Y + PADDLE_SPEED * dt)
+		player2.dy = PADDLE_SPEED
+	else
+		player2.dy = 0
 	end
 	
 	-- update out ball based on its DX and DY only if we're in play state;
 	-- scale the velocity by dt so movent is framerate-independent
 	if gameState == 'play' then
-		ballX = ballX + ballDX * dt
-		ballY = ballY + ballDY * dt
+		ball:update(dt)
 	end
+	
+	player1:update(dt)
+	player2:update(dt)
 end
 
 
@@ -121,21 +114,16 @@ function love.keypressed(key)
 	if key == 'escape' then
 		--function LÖVE gives us to terminate applicatiion
 		love.event.quit()
+    -- if we press enter during the start state of the game, we'll go into play mode
+    -- during play mode, the ball will move in a random direction
 	elseif key == 'enter' or key == 'return' then
 		if gameState == 'start' then
 			gameState = 'play'
 		else
 			gameState = 'start'
 			
-			-- start balls's position in the middle of the screen
-			ballX = VIRTUAL_WIDTH / 2 - 2
-			ballY = VIRTUAL_HEIGHT / 2 - 2
-			
-			-- give ball's X and Y velocity random starting value
-			-- the and/or pattern here is LUS's way of accomplishing a ternary
-			-- in other programming languages like C
-			ballDX = math.random(2) == 1 and 100 or -100
-			ballDY = math.random(-50, 50) * 1.5
+			-- ball's new reset method
+			ball:reset()
 		end
 	end
 end
@@ -166,14 +154,12 @@ function love.draw()
 	love.graphics.printf(tostring(player1score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3, VIRTUAL_WIDTH)
 	love.graphics.printf(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3, VIRTUAL_WIDTH)
 	
-	-- render first paddle (left side), now using th players' Y variable
-	love.graphics.rectangle('fill', 10, player1Y, 5, 20)
+	-- render paddles, now using their class's render method
+	player1:render()
+	player2:render()
 	
-	-- render second paddle (right side)
-	love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, player2Y, 5, 20)
-	
-	-- render ball (center)
-	love.graphics.rectangle('fill', ballX, ballY, 4, 4)
+	-- render ball using its class's render method
+	ball:render()
 	
 	-- end rendering at virtual resolution
 	push:apply('end')	
