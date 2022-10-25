@@ -5,6 +5,21 @@
 -- https://github.com/Ulydev/push
 push = require 'push'
 
+-- the "Class" library we're using will allow us to represent anything in
+-- our game as code, rather than keeping track of many disparate variables and
+-- methods
+--
+-- https://github.com/vrld/hump/blob/master/class.lua
+Class = require 'class'
+
+-- our Paddle class, which stores position and dimensions for each Paddle
+-- and the logic for rendering them
+require 'Paddle'
+
+-- our Ball class, which isn't much different than a Paddle structure-wise
+-- but which will mechanically function very differently
+require 'Ball'
+
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
 
