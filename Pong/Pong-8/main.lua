@@ -117,6 +117,22 @@ function love.update(dt)
 		end
 	end
 	
+	-- if we reach the left or right edge of screen,
+	-- go back to start and update the score
+	if ball.x < 0 then
+		servingPlayer = 1
+		player2Score = player2Score + 1
+		ball:reset()
+		gameState = 'serve'
+	end
+	
+	if ball.x > VIRTUAL_WIDTH then
+		servingPlayer = 2
+		player1score = player1score + 1
+		ball:reset()
+		gameState = 'serve'
+	end
+	
 	-- player 1 movement
 	if love.keyboard.isDown('w') then
 		player1.dy = -PADDLE_SPEED
