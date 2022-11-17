@@ -265,17 +265,17 @@ function love.draw()
 	displayScore()
 	
 	if gameState == 'start' then
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
-    elseif gameState == 'serve' then
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 
-            0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
-    elseif gameState == 'play' then
-        -- no UI messages to display in play
-    elseif gameState == 'done' then
+		love.graphics.setFont(smallFont)
+		love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
+		love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
+	elseif gameState == 'serve' then
+		love.graphics.setFont(smallFont)
+		love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 
+				0, 10, VIRTUAL_WIDTH, 'center')
+		love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
+	elseif gameState == 'play' then
+		-- no UI messages to display in play
+	elseif gameState == 'done' then
 		-- UI messages
 		love.graphics.setFont(largeFont)
 		love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!', 0, 10, VIRTUAL_WIDTH, 'center')

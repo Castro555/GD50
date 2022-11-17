@@ -60,7 +60,7 @@ function love.load()
 	-- initialize window with virtual resolution
 	push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
 		fullscreen = false,
-		resizable = false,
+		resizable = true,
 		vsync = true
 	})
 	
@@ -85,6 +85,14 @@ function love.load()
 	-- (used for beginning, menus, main game, high score list, etc.) 
 	-- we will use this to determine behavior during render and update
 	gameState = 'start'
+end
+
+--[[
+    Called by LÖVE whenever we resize the screen; here, we just want to pass in the
+    width and height to push so our virtual resolution can be resized as needed.
+]]
+function love.resize(w, h)
+	push:resize(w, h)
 end
 
 --[[
@@ -265,17 +273,17 @@ function love.draw()
 	displayScore()
 	
 	if gameState == 'start' then
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
-    elseif gameState == 'serve' then
-        love.graphics.setFont(smallFont)
-        love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 
-            0, 10, VIRTUAL_WIDTH, 'center')
-        love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
-    elseif gameState == 'play' then
-        -- no UI messages to display in play
-    elseif gameState == 'done' then
+		love.graphics.setFont(smallFont)
+		love.graphics.printf('Welcome to Pong!', 0, 10, VIRTUAL_WIDTH, 'center')
+		love.graphics.printf('Press Enter to begin!', 0, 20, VIRTUAL_WIDTH, 'center')
+	elseif gameState == 'serve' then
+		love.graphics.setFont(smallFont)
+		love.graphics.printf('Player ' .. tostring(servingPlayer) .. "'s serve!", 
+				0, 10, VIRTUAL_WIDTH, 'center')
+		love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
+	elseif gameState == 'play' then
+		-- no UI messages to display in play
+	elseif gameState == 'done' then
 		-- UI messages
 		love.graphics.setFont(largeFont)
 		love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!', 0, 10, VIRTUAL_WIDTH, 'center')
