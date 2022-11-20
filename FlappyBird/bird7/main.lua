@@ -61,7 +61,7 @@ function love.keypressed(key)
 	end
 end
 
-function love.keyboard.wasPrssed(key)
+function love.keyboard.wasPressed(key)
 	if love.keyboard.keysPressed[key] then
 		return true
 	else
