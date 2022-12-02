@@ -21,7 +21,7 @@ Paddle = Class{}
 ]]
 function Paddle:init()
 	-- x is places in hte middle
-	self.x = VIRTUAL_WIDTH / 32 - 32
+	self.x = VIRTUAL_WIDTH / 2 - 32
 
 	-- y is placed a little above the bottom edge of the screen
 	self.y = VIRTUAL_HEIGHT - 32
