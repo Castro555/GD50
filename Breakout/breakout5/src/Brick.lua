@@ -18,7 +18,7 @@ Brick = Class{}
 
 function Brick:init(x, y)
 	-- used for coloring and score calculation
-	self.tier = 0
+	self.tier = 1
 	self.color = 1
 
 	self.x = x
