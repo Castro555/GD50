@@ -50,4 +50,8 @@ function HighScoreState:render()
 		love.graphics.printf(tostring(score), VIRTUAL_WIDTH / 2,
 			60 + i * 13, 100, 'right')
 	end
+
+	love.graphics.setFont(gFonts['small'])
+    love.graphics.printf("Press Escape to return to the main menu!",
+        0, VIRTUAL_HEIGHT - 18, VIRTUAL_WIDTH, 'center')
 end
